@@ -1,6 +1,6 @@
 /* Titouan Teyssier - 11/27/16 */
 /*
-Here it is a pointer implementation of queues statically stored.
+Here is a pointer implementation of queues statically stored.
 */
 
 #include <stdlib.h>
