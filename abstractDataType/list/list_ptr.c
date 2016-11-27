@@ -1,3 +1,5 @@
+/* Titouan Teyssier - 11/27/16 */
+
 #include <stdlib.h>
 #include "list_ptr.h"
 

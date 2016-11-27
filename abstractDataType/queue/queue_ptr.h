@@ -1,3 +1,5 @@
+/* Titouan Teyssier - 11/27/16 */
+
 #ifndef QUEUE_PTR_H
 #define QUEUE_PTR_H
 

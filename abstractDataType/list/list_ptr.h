@@ -1,3 +1,5 @@
+/* Titouan Teyssier - 11/27/16 */
+
 #ifndef LIST_PTR_H
 #define LIST_PTR_H
 
