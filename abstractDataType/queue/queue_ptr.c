@@ -1,7 +1,6 @@
 /* Titouan Teyssier - 11/27/16 */
 
 #include <stdlib.h>
-#include "queue_ptr.h"
 
 typedef struct element {
 	struct element * next;
@@ -29,7 +28,7 @@ void queuePtr_take (t_data * data) {
 	}
 }
 
-void queuePtr_put (t_data data) {
+void queuePtr_add (t_data data) {
 	t_element  * new = malloc(sizeof(t_element));
 	new -> data = data;
 	new -> next = NULL;

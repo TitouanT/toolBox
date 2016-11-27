@@ -24,7 +24,7 @@ typedef <existingtype> t_data;
 void queuePtr_init (void);
 int  queuePtr_isEmpty (void);
 void queuePtr_take (t_data * data);
-void queuePtr_put (t_data data);
+void queuePtr_add (t_data data);
 void queuePtr_remove (void);
 
 
