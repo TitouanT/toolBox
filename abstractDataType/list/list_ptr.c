@@ -6,7 +6,7 @@
 /***** You have to code this function () *******/
 
 int areEqual (t_data d1, t_data d2) {
-	return d1 == d2; // this doesn't work for struct
+	return d1.a == d2.a && d1.x == d2.x;
 }
 
 /********************************************/
@@ -17,9 +17,9 @@ typedef struct element {
 	t_data data;
 } t_element;
 
-t_element * gFlag;
-t_element * gCurrElt;
-int gNbElt;
+static t_element * gFlag;
+static t_element * gCurrElt;
+static int gNbElt;
 
 void listPtr_init (void) {
 	gFlag = malloc (sizeof(t_element));
@@ -36,11 +36,11 @@ int  listPtr_isOut (void) {
 }
 
 void listPtr_move2end (void) {
-	ec = gFlag -> prev;
+	gCurrElt = gFlag -> prev;
 }
 
 void listPtr_move2head (void) {
-	ec = gFlag -> next;
+	gCurrElt = gFlag -> next;
 }
 
 void listPtr_readData (t_data * data) {
@@ -58,6 +58,7 @@ void listPtr_removeElt (void) {
 		gCurrElt -> prev -> next = gCurrElt -> next;
 		// put the current element on the left
 		gCurrElt = gCurrElt -> prev;
+		gNbElt--;
 		
 		free(tmp);
 	}
@@ -66,6 +67,7 @@ void listPtr_removeElt (void) {
 void listPtr_removeList (void) {
 	listPtr_move2end();
 	while (gCurrElt != gFlag) listPtr_removeElt();
+	gNbElt = 0;
 }
 
 void listPtr_next (void) {
@@ -86,6 +88,7 @@ void listPtr_appendLeft (t_data data) {
 		gFlag -> next = tmp;
 		gFlag -> prev = tmp;
 		gCurrElt = tmp;
+		gNbElt++;
 	}
 	else if (!listPtr_isOut()) {
 		tmp -> prev = gCurrElt -> prev;
@@ -93,6 +96,7 @@ void listPtr_appendLeft (t_data data) {
 		gCurrElt -> prev -> next = tmp;
 		gCurrElt -> prev = tmp;
 		gCurrElt = tmp;
+		gNbElt++;
 	}
 	else free (tmp);
 }
@@ -107,6 +111,7 @@ void listPtr_appendRight (t_data data) {
 		gFlag -> next = tmp;
 		gFlag -> prev = tmp;
 		gCurrElt = tmp;
+		gNbElt++;
 	}
 	else if (!listPtr_isOut()) {
 		tmp -> prev = gCurrElt;
@@ -114,18 +119,19 @@ void listPtr_appendRight (t_data data) {
 		gCurrElt -> next -> prev = tmp;
 		gCurrElt -> next = tmp;
 		gCurrElt = tmp;
+		gNbElt++;
 	}
 	else free (tmp);
 }
 
 void listPtr_appendEnd (t_data data) {
 	listPtr_move2end();
-	listPtr_appendRight();
+	listPtr_appendRight(data);
 }
 
 void listPtr_appendHead (t_data data) {
 	listPtr_move2head();
-	listPtr_appendLeft();
+	listPtr_appendLeft(data);
 }
 
 int listPtr_isInList (t_data data) {

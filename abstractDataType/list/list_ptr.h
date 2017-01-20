@@ -3,11 +3,11 @@
 #ifndef LIST_PTR_H
 #define LIST_PTR_H
 
-/*
+
 typedef struct {
-	<data_to_store>
+	int a;
+	float x;
 } t_data;
-*/
 
 //or
 

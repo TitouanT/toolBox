@@ -7,8 +7,8 @@ typedef struct element {
 	t_data data;
 } t_element;
 
-t_element * gEntry;
-t_element * gExit;
+static t_element * gEntry;
+static t_element * gExit;
 
 void queuePtr_init (void) {
 	gEntry = gExit = NULL;
