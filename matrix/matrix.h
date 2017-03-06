@@ -7,14 +7,16 @@ typedef struct {
 	int den;
 } frac_t;
 
-frac_t detMatTriangle (frac_t ** mat, int n, int sign);
-frac_t detMat (frac_t ** mat, int n);
+extern frac_t detMatTriangle (frac_t ** mat, int n, int sign);
+extern frac_t detMat (frac_t ** mat, int n);
 
-void triangulation (frac_t ** mat, int n, int * sign);
+extern void triangulation (frac_t ** mat, int n, int * sign);
 
-void dispMatrix (frac_t ** mat, int lines, int cols);
-frac_t ** copyMatrix (frac_t ** mat, int lines, int cols);
-frac_t ** createMatrix (int lines, int cols);
-frac_t ** createMatrixFromInt(void * matInt, int lines, int cols);
+extern frac_t ** createMatrix (int lines, int cols);
+extern frac_t ** createMatrixFromInt(void * matInt, int lines, int cols);
+extern frac_t ** copyMatrix (frac_t ** mat, int lines, int cols);
+
+extern void dispMatrix (frac_t ** mat, int lines, int cols);
+extern void dispFrac (frac_t frac, char * sep);
 
 #endif /* end of include guard: MATRIX_H */

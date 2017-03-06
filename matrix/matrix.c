@@ -5,6 +5,11 @@
 
 typedef enum {false, true} bool;
 
+
+/*************************************/
+/******  Operation on fraction  ******/
+/*************************************/
+
 static int pgcd (int a, int b) {
 	int c;
 	if (a < b) c = a, a = b, b = c;
@@ -27,11 +32,44 @@ static void reduceFraction (frac_t * f) {
 
 }
 
+static frac_t multiplyFraction(frac_t f1, frac_t f2) {
+	frac_t res;
+	res.num = f1.num * f2.num;
+	res.den = f1.den * f2.den;
+	return res;
+}
+
+static frac_t addFraction (frac_t f1, frac_t f2) {
+	frac_t res;
+	res.den = f1.den * f2.den;
+	res.num = (f1.num * f2.den) + (f2.num * f1.den);
+	return res;
+}
+
+
+/****************************************/
+/*********  Creation of matrix  *********/
+/****************************************/
+
 extern frac_t ** createMatrix (int lines, int cols) {
 	frac_t ** mat = malloc (lines * sizeof(frac_t*));
 	int i;
 	for (i = 0; i < lines; i++) {
 		mat[i] = malloc (cols * sizeof(frac_t));
+	}
+	return mat;
+}
+
+frac_t ** createMatrixFromInt(void * matInt, int lines, int cols) {
+	int i, j;
+	int si = sizeof(int);
+	frac_t ** mat = createMatrix(lines, cols);
+	for (i = 0; i < lines; i++) {
+		for (j = 0; j < cols; j++) {
+			int * matIntIJ = matInt + i * cols * si + j * si;
+			mat[i][j].num = *matIntIJ;
+			mat[i][j].den = 1;
+		}
 	}
 	return mat;
 }
@@ -43,6 +81,10 @@ extern frac_t ** copyMatrix (frac_t ** mat, int lines, int cols) {
 		cpy[i][j] = mat[i][j];
 	return cpy;
 }
+
+/*********************************************/
+/***********  Operation on matrix  ***********/
+/*********************************************/
 
 static void exchangeLines (frac_t ** mat, int l1, int l2) {
 	frac_t * tmpLine = mat[l1];
@@ -59,15 +101,12 @@ static void exchangeCols (frac_t ** mat, int c1, int c2, int lines) {
 	free(tmpCol);
 }
 
-extern void dispMatrix (frac_t ** mat, int lines, int cols) {
-	int i, j;
-	for (i = 0; i < lines; i++) {
-		for (j = 0; j < cols; j++) {
-			printf ("%3d/%3d ", mat[i][j].num, mat[i][j].den);
-		}
-		printf("\n");
+static void addLine (frac_t ** mat, int dstLine, int srcLine, frac_t mult, int cols, int firstCol) {
+	int j;
+	for (j = firstCol; j < cols; j++) {
+		frac_t fadd = multiplyFraction(mat[srcLine][j], mult);
+		mat[dstLine][j] = addFraction(mat[dstLine][j], fadd);
 	}
-	printf("\n\n");
 }
 
 static bool firstNonZero (frac_t ** mat, int firstLine, int firstCol, int n, int * line, int * col) {
@@ -82,28 +121,6 @@ static bool firstNonZero (frac_t ** mat, int firstLine, int firstCol, int n, int
 		}
 	}
 	return false;
-}
-
-static frac_t multiplyFraction(frac_t f1, frac_t f2) {
-	frac_t res;
-	res.num = f1.num * f2.num;
-	res.den = f1.den * f2.den;
-	return res;
-}
-
-static frac_t addFraction (frac_t f1, frac_t f2) {
-	frac_t res;
-	res.den = f1.den * f2.den;
-	res.num = (f1.num * f2.den) + (f2.num * f1.den);
-	return res;
-}
-
-static void addLine (frac_t ** mat, int dstLine, int srcLine, frac_t mult, int cols, int firstCol) {
-	int j;
-	for (j = firstCol; j < cols; j++) {
-		frac_t fadd = multiplyFraction(mat[srcLine][j], mult);
-		mat[dstLine][j] = addFraction(mat[dstLine][j], fadd);
-	}
 }
 
 extern void triangulation (frac_t ** mat, int n, int * sign) { // the matrix must be a square
@@ -144,6 +161,11 @@ extern void triangulation (frac_t ** mat, int n, int * sign) { // the matrix mus
 		reduceFraction(&(mat[i][j]));
 }
 
+
+/************************************************/
+/*********  Calculation of determinant  *********/
+/************************************************/
+
 extern frac_t detMatTriangle (frac_t ** mat, int n, int sign) {
 	frac_t det = {sign, 1};
 	int i;
@@ -159,17 +181,21 @@ extern frac_t detMat (frac_t ** mat, int n) {
 	return detMatTriangle(tri, n, sign);
 }
 
+/*********************************************/
+/*****************  Display  *****************/
+/*********************************************/
 
-frac_t ** createMatrixFromInt(void * matInt, int lines, int cols) {
+extern void dispFrac (frac_t frac, char * sep) {
+	printf ("%3d/%3d%s", frac.num, frac.den, sep);
+}
+
+
+extern void dispMatrix (frac_t ** mat, int lines, int cols) {
 	int i, j;
-	int si = sizeof(int);
-	frac_t ** mat = createMatrix(lines, cols);
 	for (i = 0; i < lines; i++) {
-		for (j = 0; j < cols; j++) {
-			int * matIntIJ = matInt + i * cols * si + j * si;
-			mat[i][j].num = *matIntIJ;
-			mat[i][j].den = 1;
-		}
+		for (j = 0; j < cols; j++)
+			dispFrac(mat[i][j], " ");
+		printf("\n");
 	}
-	return mat;
+	printf("\n\n");
 }

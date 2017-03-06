@@ -16,6 +16,6 @@ int main () {
 	frac_t det = detMat(mat, N);
 
 	dispMatrix(mat, lines, cols);
-	printf("det: %d/%d\n", det.num, det.den);
+	dispFrac(det, "\n");
 	return 0;
 }
