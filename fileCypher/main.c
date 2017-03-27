@@ -7,13 +7,6 @@
 
 #define H_SIZE 32
 
-void print_hash(unsigned char hash[]) {
-	int idx;
-	for (idx=0; idx < 32; idx++)
-		printf("%02x", hash[idx]);
-	printf("\n");
-}
-
 void gethash (BYTE * hash) {
 	char * password = getpass("password: ");
 	char * confirm = malloc((1 + strlen(password)) * sizeof(char));
@@ -66,7 +59,6 @@ int main (int argc, char ** argv) {
 
 	BYTE hash[H_SIZE];
 	gethash(hash);
-	print_hash(hash);
 
 	char dataw, datar;
 	fread(&dataw, sizeof(char), 1, src);
